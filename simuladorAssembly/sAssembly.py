@@ -38,7 +38,7 @@ def init(arq):
 	for i in range (32):
 	
 
-		regs.append("{} {}\n".format(i,"00000000000000000000000000000010"));
+		regs.append("{} {}\n".format(i,"00000000000000000000000000000000"));
 
 
 	arq.writelines(regs);

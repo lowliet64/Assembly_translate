@@ -88,7 +88,7 @@ for i in range (len(linhasE)):
 		#pegando os valores dos registradores
 		regS = regs[rs].split();
 		regT = regs[rt].split();
-		add  = intCon(regS[1])+intCon(regS[1]);
+		add  = intCon(regS[1])+intCon(regT[1]);
 		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
 	elif(comandoL[0]=="SUB" or comandoL[0]=="SUBU"):
 		
@@ -98,7 +98,7 @@ for i in range (len(linhasE)):
 		#pegando os valores dos registradores
 		regS = regs[rs].split();
 		regT = regs[rt].split();
-		add  = intCon(regS[1])-intCon(regS[1]);
+		add  = intCon(regS[1])-intCon(regT[1]);
 		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
 
 	elif(comandoL[0]=="AND"):
@@ -109,7 +109,7 @@ for i in range (len(linhasE)):
 		#pegando os valores dos registradores
 		regS = regs[rs].split();
 		regT = regs[rt].split();
-		add  = intCon(regS[1]) & intCon(regS[1]);
+		add  = intCon(regS[1]) & intCon(regT[1]);
 		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
 
 	elif(comandoL[0]=="OR"):
@@ -119,7 +119,7 @@ for i in range (len(linhasE)):
 		#pegando os valores dos registradores
 		regS = regs[rs].split();
 		regT = regs[rt].split();
-		add  = intCon(regS[1]) | intCon(regS[1]);
+		add  = intCon(regS[1]) | intCon(regT[1]);
 		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
 	elif(comando[0]=="XOR"):
 		rd=int(comandoL[1]);
@@ -128,17 +128,94 @@ for i in range (len(linhasE)):
 		#pegando os valores dos registradores
 		regS = regs[rs].split();
 		regT = regs[rt].split();
-		add  = intCon(regS[1]) ^ intCon(regS[1]);
+		add  = intCon(regS[1]) ^ intCon(regT[1]);
 		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
 	elif(comandoL[0]=="NOR"):
+
 		rd=int(comandoL[1]);
 		rs=int(comandoL[2]);
 		rt=int(comandoL[3]);
 		#pegando os valores dos registradores
 		regS = regs[rs].split();
 		regT = regs[rt].split();
-		add  = ~(intCon(regS[1]) ^ intCon(regS[1]));
+		add  = ~(intCon(regS[1]) ^ intCon(regT[1]));
 		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
+	elif(comandoL[0]=="ADDI" or comandoL[0]=="ADDIU"):
+
+		rd=int(comandoL[1]);
+		rs=int(comandoL[2]);
+		imm=int(comandoL[3]);
+		#pegando os valores dos registradores
+		regS = regs[rs].split();
+		
+		add  = intCon(regS[1])+imm;
+		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
+
+	elif(comandoL[0]=="SLT" or comandoL[0]=="SLTU"):
+		rd=int(comandoL[1]);
+		rs=int(comandoL[2]);
+		rt=int(comandoL[3]);
+		#pegando os valores dos registradores
+		regS = regs[rs].split();
+		regT = regs[rt].split();
+		
+		add  = int(intCon(regS[1])<intCon(regT[1]));
+		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
+	elif(comandoL[0]=="SLTI" or comandoL[0]=="SLTIU"):
+		rd=int(comandoL[1]);
+		rs=int(comandoL[2]);
+		imm=int(comandoL[3]);
+		#pegando os valores dos registradores
+		regS = regs[rs].split();
+		add  = int(intCon(regS[1])<imm);
+		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
+	elif(comandoL[0]=="ANDI"):
+		rd=int(comandoL[1]);
+		rs=int(comandoL[2]);
+		imm=int(comandoL[3]);
+		#pegando os valores dos registradores
+		regS = regs[rs].split();
+		add  = int(intCon(regS[1])&imm);
+		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
+	elif(comando[0]=="ORI"):
+		rd=int(comandoL[1]);
+		rs=int(comandoL[2]);
+		imm=int(comandoL[3]);
+		#pegando os valores dos registradores
+		regS = regs[rs].split();
+		add  = int(intCon(regS[1])|imm);
+		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
+	elif(comando[0]=="LUI"):
+		rd=int(comandoL[1]);
+		rs=int(comandoL[2]);
+		imm=int(comandoL[3]);
+		#pegando os valores dos registradores
+		regS = regs[rs].split();
+		add  = int(imm<<16);
+		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
+	elif(comandoL[0]=="SLL"):
+		rd=int(comandoL[1]);
+		rt=int(comandoL[2]);
+		h=int(comandoL[3]);
+
+		#pegando os valores dos registradores
+		regS = regs[rs].split();
+		add  = int(rt<<h);
+		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
+	elif(comandoL[0]=="SRL" or comandoL[0]=="SRA"):
+		rd=int(comandoL[1]);
+		rt=int(comandoL[2]);
+		h=int(comandoL[3]);
+
+		#pegando os valores dos registradores
+		regS = regs[rs].split();
+		add  = int(rt>>h);
+		regs[rd]="{} {}\n".format(rd,register_formation(binCon(add)));
+
+
+
+
+
 
 
 
